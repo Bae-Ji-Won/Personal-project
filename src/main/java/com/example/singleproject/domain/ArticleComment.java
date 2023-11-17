@@ -28,7 +28,7 @@ public class ArticleComment extends AuditingFields{
     private Long id;
     @Setter
     @ManyToOne(optional = false)
-    private Article articleId;      // FK (Article Entity Id)
+    private Article article;      // FK (Article Entity Id)
 
     @Setter
     @Column(nullable = false, length = 500)
@@ -37,8 +37,8 @@ public class ArticleComment extends AuditingFields{
     protected ArticleComment() {
     }
 
-    private ArticleComment(Article articleId, String content) {
-        this.articleId = articleId;
+    private ArticleComment(Article article, String content) {
+        this.article = article;
         this.content = content;
     }
 
