@@ -11,19 +11,26 @@ logging:
 
 spring:
   datasource:
+# 메인 DB mysql로 지정
     url: jdbc:mysql://localhost:3306/board
     username: qowl880
     password: test!
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+# 메인 DB h2로 지정
+#    url: jdbc:h2:mem:testdb
+#    username: sa
+#    driver-class-name: org.h2.Driver
+
   jpa:
     defer-datasource-initialization: true
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: create
     show-sql: true
     properties:
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
-  h2.console.enabled: false
+
+  h2.console.enabled: false   # h2 console 사용 안함
   sql.init.mode: always
 
 
