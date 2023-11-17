@@ -21,9 +21,8 @@ import java.util.Set;
         @Index(columnList = "createdAt"),
         @Index(columnList = "createdBy")
 })
-@EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Article {
+public class Article extends AuditingFields{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,18 +38,9 @@ public class Article {
     @OrderBy("id")      // id기준으로 정렬
     @OneToMany(mappedBy = "articleId", cascade = CascadeType.ALL)   // 양방향 맵핑 rticleComment의 articleId의 변수를 가진 것과 맵핑함
     private final Set<ArticleComment> articleComment= new LinkedHashSet<>();
-    @CreatedDate
-    @Column(nullable = false)
-    private LocalDateTime createdAt;    // 생성일자
-    @CreatedBy
-    @Column(nullable = false, length = 100)
-    private String createdBy;       // 생성자
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime modifiedAt;       // 수정일자
-    @LastModifiedBy
-    @Column(nullable = false, length = 100)
-    private String modifiedBy;          // 수정자
+
+
+
 
     protected Article() {}      // 생성자1
 

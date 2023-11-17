@@ -22,7 +22,7 @@ import java.util.Objects;
 })
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class ArticleComment {
+public class ArticleComment extends AuditingFields{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,18 +33,6 @@ public class ArticleComment {
     @Setter
     @Column(nullable = false, length = 500)
     private String content;     // 내용
-    @CreatedDate
-    @Column(nullable = false)
-    private LocalDateTime createdAt;    // 생성일자
-    @CreatedBy
-    @Column(nullable = false, length = 100)
-    private String createdBy;       // 생성자
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime modifiedAt;       // 수정일자
-    @LastModifiedBy
-    @Column(nullable = false, length = 100)
-    private String modifiedBy;          // 수정자
 
     protected ArticleComment() {
     }
