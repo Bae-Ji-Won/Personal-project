@@ -17,8 +17,7 @@ spring:
     password: test!
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-
-  # 메인 DB h2로 지정
+# 메인 DB h2로 지정
 #    url: jdbc:h2:mem:testdb
 #    username: sa
 #    driver-class-name: org.h2.Driver
@@ -49,3 +48,6 @@ spring:
     url: jdbc:h2:mem:board;mode=mysql
     driver-class-name: org.h2.Driver
   sql.init.mode: always
+  test:
+    database:
+      replace:
