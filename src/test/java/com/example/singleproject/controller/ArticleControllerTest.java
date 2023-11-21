@@ -31,7 +31,7 @@ class ArticleControllerTest {
         // When & Then
         mvc.perform(MockMvcRequestBuilders.get("/articles"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.TEXT_HTML))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("articles/index"))
                 .andExpect(model().attributeExists("articles"));
     }
