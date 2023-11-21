@@ -1,16 +1,10 @@
 package com.example.singleproject.domain;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -28,7 +22,7 @@ public class ArticleComment extends AuditingFields{
     private Long id;
     @Setter
     @ManyToOne(optional = false)
-    private Article articleId;      // FK (Article Entity Id)
+    private Article article;      // FK (Article Entity Id)
 
     @Setter
     @Column(nullable = false, length = 500)
@@ -37,8 +31,8 @@ public class ArticleComment extends AuditingFields{
     protected ArticleComment() {
     }
 
-    private ArticleComment(Article articleId, String content) {
-        this.articleId = articleId;
+    private ArticleComment(Article article, String content) {
+        this.article = article;
         this.content = content;
     }
 

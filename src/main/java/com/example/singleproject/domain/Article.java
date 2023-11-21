@@ -1,12 +1,8 @@
 package com.example.singleproject.domain;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
@@ -36,7 +32,7 @@ public class Article extends AuditingFields{
 
     @ToString.Exclude           // 순환 참조를 방지하기 위해 여기서는 ToString을 끊어줌 (Article -> ArticleComment -> Article 무한 반복됙 때문에)
     @OrderBy("id")      // id기준으로 정렬
-    @OneToMany(mappedBy = "articleId", cascade = CascadeType.ALL)   // 양방향 맵핑 rticleComment의 articleId의 변수를 가진 것과 맵핑함
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)   // 양방향 맵핑 rticleComment의 articleId의 변수를 가진 것과 맵핑함
     private final Set<ArticleComment> articleComment= new LinkedHashSet<>();
 
 
