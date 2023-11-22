@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>게시판 페이지</title>
 </head>
 <body>
 
-    <header>
+<!--thymeleaf fragment로 추가할려고 했으나 적용이 안됨 따라서 iframe으로 대체함-->
+<!--    <div th:insert="~{header :: header}"></div> -->
 
-        <hr>
-    </header>
+    <iframe src="../header.html"></iframe>
 
     <main>
         <form>
@@ -69,9 +69,9 @@
         </nav>
     </main>
 
-    <footer>
-        <hr>
-        footer 사업부
+    <iframe src="../footer.html"></iframe>
+<!--    <footer th:replace="footer :: footer">-->
+
     </footer>
 </body>
 </html>
