@@ -1,6 +1,5 @@
 package com.example.singleproject.domain;
 
-import javax.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedBy;
@@ -10,6 +9,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
+import javax.persistence.EntityListeners;
+import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 
@@ -19,7 +21,7 @@ import java.time.LocalDateTime;
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass       // 상속 관계에 있는 엔티티 클래스들 간에 공통으로 사용되는 매핑 정보를 정의
-public class AuditingFields {
+public abstract class AuditingFields {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedDate
     @Column(nullable = false, updatable = false)        // 공백불가, 업데이트 불가

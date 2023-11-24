@@ -22,6 +22,7 @@ repositories {
 }
 
 dependencies {
+
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -29,13 +30,24 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.data:spring-data-rest-hal-explorer'	// 미리 만들어진 Hal Explorer를 통해 간단한 API 테스트를 할 수 있도록 함 (Swagger랑 비슷함)
 	implementation 'mysql:mysql-connector-java'
+
+	// thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+	// security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+
 //	runtimeOnly 'com.mysql:mysql-connector-j'
 //	runtimeOnly 'com.h2database:h2'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'	// 사용자가 직접 만든 config 속성을 yaml에서 사용 가능해짐
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+
 
 
 
