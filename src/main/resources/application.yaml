@@ -35,6 +35,9 @@ spring:
   data.rest:
       base-path: /api
       detection-strategy: annotated
+  thymeleaf3:
+    decoupled-logic: true
+
 
 
 
@@ -46,7 +49,7 @@ spring:
   config.activate.on-profile: testdb
   datasource:
     url: jdbc:h2:mem:board;mode=mysql
-    driver-class-name: org.h2.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
   sql.init.mode: always
   test:
     database:

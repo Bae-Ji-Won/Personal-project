@@ -6,10 +6,7 @@
 </head>
 <body>
 
-<!--thymeleaf fragment로 추가할려고 했으나 적용이 안됨 따라서 iframe으로 대체함-->
-<!--    <div th:insert="~{header :: header}"></div> -->
-
-    <iframe src="../header.html"></iframe>
+    <header id="header"></header>
 
     <main>
         <form>
@@ -69,9 +66,6 @@
         </nav>
     </main>
 
-    <iframe src="../footer.html"></iframe>
-<!--    <footer th:replace="footer :: footer">-->
-
-    </footer>
+    <footer id="footer"></footer>
 </body>
 </html>
