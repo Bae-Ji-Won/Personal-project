@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<thlogic>
+    <attr sel="#header" th:replace="header:: header"></attr>     <!-- id값을 받아와 해당 위치에 header.html안의 내용을 넣음-->
+    <attr sel="#footer" th:replace="footer:: footer"></attr>
+</thlogic>
