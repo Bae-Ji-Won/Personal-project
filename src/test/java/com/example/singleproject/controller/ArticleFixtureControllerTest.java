@@ -18,11 +18,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(SecurityConfig.class)
 @DisplayName("[View] Controller - 게시글")
 @WebMvcTest(ArticleController.class)
-class ArticleControllerTest {
+class ArticleFixtureControllerTest {
 
     private final MockMvc mvc;
 
-    public ArticleControllerTest(@Autowired MockMvc mockMvc){
+    public ArticleFixtureControllerTest(@Autowired MockMvc mockMvc){
         this.mvc = mockMvc;
     }
 
