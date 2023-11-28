@@ -51,11 +51,12 @@ public class Article extends AuditingFields{
         this.hashtag = hashtag;
     }
 
-    public static Article of(UserAccount userAccount, String title, String content, String hashtag) {
+    public static Article of(UserAccount userAccount, String title, String content, String hashtag) {           // Dto -> Entity할떄 사용
         return new Article(userAccount, title,content,hashtag);
     }
 
-    
+
+
     /* equals && hashCode는 현재 Entity와 DB에 저장된 테이블이 일치하는지 매칭검사하는 용으로 여러개의 컬럼들 중
        유니크 값을 가지는 id만 비교해도 됨(만약 DB에서 content내용을 변경한 경우는 찾을수가 없기때문에 그때는 Lombok의 @EqualsAndHashCode어노테이션을 클래스에 추가해줘서 모든 컬럼에 대해 비교시킴)
      */
