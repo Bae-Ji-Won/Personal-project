@@ -22,12 +22,12 @@ public record ArticleWithCommentsDto(
         return new ArticleWithCommentsDto(id, userAccountDto, articleCommentDtos, title, content, hashtag, createdAt, createdBy, modifiedAt, modifiedBy);
     }
 
-    public static ArticleWithCommentsDto from(Article entity){
+    public static ArticleWithCommentsDto from(Article entity) {
         return new ArticleWithCommentsDto(
                 entity.getId(),
                 UserAccountDto.from(entity.getUserAccount()),
                 entity.getArticleComments().stream()
-                        .map(ArticleCommentDto::from)    // entity.getArticleComments의 데이터를 ArticleCommentDto로 변환
+                        .map(ArticleCommentDto::from)   // entity.getArticleComments의 데이터를 ArticleCommentDto로 변환
                         .collect(Collectors.toCollection(LinkedHashSet::new)),  // LinkedHashSet 인스턴스를 생성하여 위의 값을 넣음
                 entity.getTitle(),
                 entity.getContent(),
@@ -38,4 +38,5 @@ public record ArticleWithCommentsDto(
                 entity.getModifiedBy()
         );
     }
+
 }

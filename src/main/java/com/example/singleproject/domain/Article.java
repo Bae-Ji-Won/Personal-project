@@ -52,7 +52,11 @@ public class Article extends AuditingFields{
     }
 
     public static Article of(UserAccount userAccount, String title, String content, String hashtag) {           // Dto -> Entity할떄 사용
-        return new Article(userAccount, title,content,hashtag);
+        String hashtagResult = "";
+        if(hashtag.charAt(0) != '#'){
+            hashtagResult = String.format('#'+hashtag);
+        }
+        return new Article(userAccount, title,content,hashtagResult);
     }
 
 
