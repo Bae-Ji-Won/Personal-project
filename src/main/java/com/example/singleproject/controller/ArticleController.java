@@ -5,6 +5,7 @@ import com.example.singleproject.dto.response.ArticleResponse;
 import com.example.singleproject.dto.response.ArticleWithCommentResponse;
 import com.example.singleproject.service.ArticleService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/articles")
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class ArticleController {
 
     private final ArticleService articleService;
@@ -40,6 +42,8 @@ public class ArticleController {
         map.addAttribute("article", article);
         map.addAttribute("articleComments", article.articleCommentsResponse());
 
+        System.out.println("test : ");
+        System.out.println(article.articleCommentsResponse().toString());
         return "articles/detail";
     }
 
