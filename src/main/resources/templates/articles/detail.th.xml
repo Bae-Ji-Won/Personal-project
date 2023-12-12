@@ -2,4 +2,22 @@
 <thlogic>
     <attr sel="#header" th:replace="header:: header"></attr>     <!-- id값을 받아와 해당 위치에 header.html안의 내용을 넣음-->
     <attr sel="#footer" th:replace="footer:: footer"></attr>
+
+    <attr sel="#article-main" th:object="${article}">
+        <!-- th:object를 통해 article객체를 가져오고 아래에서는 ${article.title}이 아닌 *{title}로 요약작성이 가능함 -->
+        <attr sel="#article-header/h1" th:text="*{title}"/>
+        <attr sel="#nickname" th:text="*{nickname}"/>
+        <attr sel="#email" th:text="*{email}"/>
+        <attr sel="#created-at" th:datetime="*{createdAt}" th:text="*{#temporals.format(createdAt,'yyyy-MM-dd HH:mm:ss')}"/>
+        <attr sel="#hashtag" th:text="*{hashtag}"/>
+        <attr sel="#article-content/pre" th:text="*{content}"/>
+    </attr>
+
+    <attr sel="#article-comments" th:remove="all-but-first">
+        <attr sel="li[0]" th:each="articleComment : ${articleComments}">
+            <attr sel="div/strong" th:text="${articleComment.nickname}"/>
+            <attr sel="div/small/time" th:datetime="${articleComment.createdAt}" th:text="${#temporals.format(createdAt,'yyyy-MM-dd HH:mm:ss')}"/>
+            <attr sel="div/p" th:text="${articleComment.content}"/>
+        </attr>
+    </attr>
 </thlogic>
