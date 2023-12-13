@@ -42,6 +42,7 @@ public class ArticleController {
 
         map.addAttribute("articles",articles);
         map.addAttribute("paginationBarNumbers", pagenums);
+        map.addAttribute("searchTypes",SearchType.values());
 
         return "articles/index";
     }
