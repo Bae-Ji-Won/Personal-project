@@ -2,6 +2,7 @@ package com.example.singleproject.repository;
 
 import com.example.singleproject.domain.Article;
 import com.example.singleproject.domain.QArticle;
+import com.example.singleproject.repository.querydsl.ArticleRepositoryCustom;
 import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 // 만약 QuerydslBinderCustomizer를 사용하지 않았다면 검색기능에서 정확하게 값을 입력해야함. 그러나 사용한다면 대소문자 상관없고 앞글자 몇개만 입력해도 해당되는 값을 모두 찾아줌
 public interface ArticleRepository extends
         JpaRepository<Article, Long>,
+        ArticleRepositoryCustom,
         QuerydslPredicateExecutor<Article>,
         QuerydslBinderCustomizer<QArticle> {
 

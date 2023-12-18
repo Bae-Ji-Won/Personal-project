@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class ArticleService {
     @Transactional(readOnly = true)
     public Page<ArticleDto> searchArticles(SearchType searchType, String searchKeyword, Pageable pageable) {
         if(searchKeyword == null || searchKeyword.isBlank()){
-            return articleRepository.findAll(pageable).map(ArticleDto::from);
+            return articleRepository.findAll(pageable).map(ArticleDto::from);       // entity -> dto
         }
 
         return switch (searchType){
@@ -64,5 +65,24 @@ public class ArticleService {
 
     public void deleteArticle(long articleId){
         articleRepository.deleteById(articleId);
+    }
+
+    public long getArticleCount(){
+        return articleRepository.count();
+    }
+
+    // 해시태그를 통해서 해당 해시태그 데이터 찾기
+    @Transactional(readOnly = true)
+    public Page<ArticleDto> searchArticlesViaHashtag(String hashtag, Pageable pageable){
+        if(hashtag == null || hashtag.isBlank()){
+            return Page.empty(pageable);
+        }
+
+        return articleRepository.findByHashtag(hashtag,pageable).map(ArticleDto::from);
+    }
+
+    // 해시태그 종류만 찾기
+    public List<String> getHashtags(){
+        return articleRepository.findAllDistinctHashtags();
     }
 }
