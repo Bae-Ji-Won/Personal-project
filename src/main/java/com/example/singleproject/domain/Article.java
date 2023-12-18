@@ -1,16 +1,16 @@
 package com.example.singleproject.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
-import lombok.*;
-
-
-import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes = {
         @Index(columnList = "title"),
         @Index(columnList = "hashtag"),
@@ -22,35 +22,45 @@ public class Article extends AuditingFields{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Setter
+    @ManyToOne(optional = false)            // 필수 연관(null 불가)
+    private UserAccount userAccount;
+
     @Setter
     @Column(nullable = false)
     private String title;   // 제목       Setter를 개별 변수에 걸어 외부에서 id에는 접근하지 못하도록 함
+
     @Setter
     @Column(nullable = false, length = 10000)
     private String content;     // 내용
     @Setter private String hashtag;     // 해시태그
 
     @ToString.Exclude           // 순환 참조를 방지하기 위해 여기서는 ToString을 끊어줌 (Article -> ArticleComment -> Article 무한 반복됙 때문에)
-    @OrderBy("id")      // id기준으로 정렬
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)   // 양방향 맵핑 rticleComment의 articleId의 변수를 가진 것과 맵핑함
-    private final Set<ArticleComment> articleComment= new LinkedHashSet<>();
-
-
+    @OrderBy("createdAt DESC")      // id기준으로 정렬
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)   // 양방향 맵핑 ArticleComment의 articleId의 변수를 가진 것과 맵핑함
+    private final Set<ArticleComment> articleComments= new LinkedHashSet<>();
 
 
     protected Article() {}      // 생성자1
 
-    private Article(String title, String content, String hashtag) {     // 생성자2
+    private Article(UserAccount userAccount, String title, String content, String hashtag) {     // 생성자2
+        this.userAccount = userAccount;
         this.title = title;
         this.content = content;
         this.hashtag = hashtag;
     }
 
-    public static Article of(String title, String content, String hashtag) {
-        return new Article(title,content,hashtag);
+    public static Article of(UserAccount userAccount, String title, String content, String hashtag) {           // Dto -> Entity할떄 사용
+        String hashtagResult = "";
+        if(hashtag.charAt(0) != '#'){
+            hashtagResult = String.format('#'+hashtag);
+        }
+        return new Article(userAccount, title,content,hashtagResult);
     }
 
-    
+
+
     /* equals && hashCode는 현재 Entity와 DB에 저장된 테이블이 일치하는지 매칭검사하는 용으로 여러개의 컬럼들 중
        유니크 값을 가지는 id만 비교해도 됨(만약 DB에서 content내용을 변경한 경우는 찾을수가 없기때문에 그때는 Lombok의 @EqualsAndHashCode어노테이션을 클래스에 추가해줘서 모든 컬럼에 대해 비교시킴)
      */
