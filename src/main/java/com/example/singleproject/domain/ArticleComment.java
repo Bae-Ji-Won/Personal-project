@@ -22,11 +22,12 @@ public class ArticleComment extends AuditingFields{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Setter
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false)    // 양방향 맵핑
     private Article article;      // FK (Article Entity Id)
 
     @Setter
     @ManyToOne(optional = false)
+    @JoinColumn(name = "userId")    // 단방향 맵핑일때 어떤 id와 연관되는지 표시
     private UserAccount userAccount;
 
     @Setter

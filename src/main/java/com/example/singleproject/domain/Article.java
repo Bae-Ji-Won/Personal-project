@@ -25,6 +25,7 @@ public class Article extends AuditingFields{
 
     @Setter
     @ManyToOne(optional = false)            // 필수 연관(null 불가)
+    @JoinColumn(name = "userId")            // 단방향 맵핑일때 어떤 id와 연관되는지 표시
     private UserAccount userAccount;
 
     @Setter
