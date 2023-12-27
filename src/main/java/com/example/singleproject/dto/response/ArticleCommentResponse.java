@@ -10,12 +10,21 @@ public record ArticleCommentResponse(
         String content,
         LocalDateTime createdAt,
         String email,
-        String nickname
+        String nickname,
+        String userId
 ) implements Serializable {
 
-    public static ArticleCommentResponse of(Long id, String content, LocalDateTime createdAt, String email, String nickname) {
-        return new ArticleCommentResponse(id, content, createdAt, email, nickname);
+    public static ArticleCommentResponse of(Long id, String content, LocalDateTime createdAt, String email, String nickname, String userId) {
+        return ArticleCommentResponse.of(id, content, createdAt, email, nickname, userId);
     }
+
+
+//    public static ArticleCommentResponse of(Long id, String content, LocalDateTime createdAt, String email, String nickname, String userId, Long parentCommentId) {
+//        Comparator<ArticleCommentResponse> childCommentComparator = Comparator
+//                .comparing(ArticleCommentResponse::createdAt)
+//                .thenComparingLong(ArticleCommentResponse::id);
+//        return new ArticleCommentResponse(id, content, createdAt, email, nickname, userId, parentCommentId, new TreeSet<>(childCommentComparator));
+//    }
 
     public static ArticleCommentResponse from(ArticleCommentDto dto) {
         String nickname = dto.userAccountDto().nickname();
@@ -23,12 +32,13 @@ public record ArticleCommentResponse(
             nickname = dto.userAccountDto().userId();
         }
 
-        return new ArticleCommentResponse(
+        return ArticleCommentResponse.of(
                 dto.id(),
                 dto.content(),
                 dto.createdAt(),
                 dto.userAccountDto().email(),
-                nickname
+                nickname,
+                dto.userAccountDto().userId()
         );
     }
 

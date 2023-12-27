@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -35,7 +36,14 @@ public class Article extends AuditingFields{
     @Setter
     @Column(nullable = false, length = 10000)
     private String content;     // 내용
-    @Setter private String hashtag;     // 해시태그
+    @ToString.Exclude
+    @JoinTable(
+            name = "article_hashtag",
+            joinColumns = @JoinColumn(name = "articleId"),
+            inverseJoinColumns = @JoinColumn(name = "hashtagId")
+    )
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Hashtag> hashtag = new LinkedHashSet<>();
 
     @ToString.Exclude           // 순환 참조를 방지하기 위해 여기서는 ToString을 끊어줌 (Article -> ArticleComment -> Article 무한 반복됙 때문에)
     @OrderBy("createdAt DESC")      // id기준으로 정렬
@@ -45,19 +53,26 @@ public class Article extends AuditingFields{
 
     protected Article() {}      // 생성자1
 
-    private Article(UserAccount userAccount, String title, String content, String hashtag) {     // 생성자2
+    private Article(UserAccount userAccount, String title, String content) {     // 생성자2
         this.userAccount = userAccount;
         this.title = title;
         this.content = content;
-        this.hashtag = hashtag;
     }
 
-    public static Article of(UserAccount userAccount, String title, String content, String hashtag) {           // Dto -> Entity할떄 사용
-        String hashtagResult = "";
-        if(hashtag.charAt(0) != '#'){
-            hashtagResult = String.format('#'+hashtag);
-        }
-        return new Article(userAccount, title,content,hashtagResult);
+    public static Article of(UserAccount userAccount, String title, String content) {
+        return new Article(userAccount, title, content);
+    }
+
+    public void addHashtag(Hashtag hashtag) {
+        this.getHashtag().add(hashtag);
+    }
+
+    public void addHashtags(Collection<Hashtag> hashtag) {
+        this.getHashtag().addAll(hashtag);
+    }
+
+    public void clearHashtags() {
+        this.getHashtag().clear();
     }
 
 

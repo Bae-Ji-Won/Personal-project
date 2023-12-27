@@ -1,6 +1,7 @@
 package com.example.singleproject.dto.response;
 
 import com.example.singleproject.dto.ArticleWithCommentsDto;
+import com.example.singleproject.dto.HashtagDto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -12,14 +13,14 @@ public record ArticleWithCommentResponse(
         Long id,
         String title,
         String content,
-        String hashtag,
+        Set<String> hashtag,
         LocalDateTime createdAt,
         String email,
         String nickname,
         Set<ArticleCommentResponse> articleCommentsResponse
 ) implements Serializable {
 
-    public static ArticleWithCommentResponse of(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname, Set<ArticleCommentResponse> articleCommentsResponse) {
+    public static ArticleWithCommentResponse of(Long id, String title, String content, Set<String> hashtag, LocalDateTime createdAt, String email, String nickname, Set<ArticleCommentResponse> articleCommentsResponse) {
         return new ArticleWithCommentResponse(id, title, content, hashtag, createdAt, email, nickname, articleCommentsResponse);
     }
 
@@ -33,11 +34,13 @@ public record ArticleWithCommentResponse(
                 dto.id(),
                 dto.title(),
                 dto.content(),
-                dto.hashtag(),
+                dto.hashtagDtos().stream()
+                        .map(HashtagDto::hashtagName)
+                        .collect(Collectors.toUnmodifiableSet()),
                 dto.createdAt(),
                 dto.userAccountDto().email(),
                 nickname,
-                dto.articleCommentsDto().stream()
+                dto.articleCommentDtos().stream()
                         .map(ArticleCommentResponse::from)
                         .collect(Collectors.toCollection(LinkedHashSet::new))
         );

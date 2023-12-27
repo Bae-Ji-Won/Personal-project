@@ -46,7 +46,7 @@ public class ArticleService {
     }
 
     public void saveArticle(ArticleDto dto) {
-        articleRepository.save(dto.toEntity());
+        articleRepository.save(dto.toEntity(dto.userAccountDto().toEntity()));
     }
 
     public void updateArticle(ArticleDto dto){

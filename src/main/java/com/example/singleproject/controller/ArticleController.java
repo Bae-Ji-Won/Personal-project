@@ -2,6 +2,8 @@ package com.example.singleproject.controller;
 
 import com.example.singleproject.dto.Type.FormStatus;
 import com.example.singleproject.dto.Type.SearchType;
+import com.example.singleproject.dto.UserAccountDto;
+import com.example.singleproject.dto.request.ArticleRequest;
 import com.example.singleproject.dto.response.ArticleResponse;
 import com.example.singleproject.dto.response.ArticleWithCommentResponse;
 import com.example.singleproject.service.ArticleService;
@@ -14,10 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,18 +43,20 @@ public class ArticleController {
         map.addAttribute("articles",articles);
         map.addAttribute("paginationBarNumbers", pagenums);
         map.addAttribute("searchTypes",SearchType.values());
+        map.addAttribute("searchTypeHashtag", SearchType.HASHTAG);
 
         return "articles/index";
     }
 
     @GetMapping("/{articleId}")
-    public String article(@PathVariable Long articleId,ModelMap map){
+    public String article(@PathVariable Long articleId, ModelMap map) {
         ArticleWithCommentResponse article = ArticleWithCommentResponse.from(articleService.getArticle(articleId));
+
         map.addAttribute("article", article);
         map.addAttribute("articleComments", article.articleCommentsResponse());
+        map.addAttribute("totalCount", articleService.getArticleCount());
+        map.addAttribute("searchTypeHashtag", SearchType.HASHTAG);
 
-        System.out.println("test : ");
-        System.out.println(article.articleCommentsResponse().toString());
         return "articles/detail";
     }
 
@@ -85,49 +86,47 @@ public class ArticleController {
         return "articles/form";
     }
 
-//    // 게시글 작성 폼 작성
-//    @PostMapping("/form")
-//    public String postNewArticle(
-//            @AuthenticationPrincipal
-//            BoardPrincipal boardPrincipal,
-//            ArticleRequest articleRequest
-//    ) {
-//        articleService.saveArticle(articleRequest.toDto(boardPrincipal.toDto()));
-//
-//        return "redirect:/articles";
-//    }
+    // 게시글 작성 폼 작성
+    @PostMapping("/form")
+    public String postNewArticle(ArticleRequest articleRequest) {
+        articleService.saveArticle(articleRequest.toDto(UserAccountDto.of(
+                "test1","1234","test1@email.com","Test1","memo"
+                )));
 
-//    // 게시글 수정 폼(기존 값 출력)
-//    @GetMapping("/{articleId}/form")
-//    public String updateArticleForm(@PathVariable Long articleId, ModelMap map) {
-//        ArticleResponse article = ArticleResponse.from(articleService.getArticle(articleId));
-//
-//        map.addAttribute("article", article);
-//        map.addAttribute("formStatus", FormStatus.UPDATE);
-//
-//        return "articles/form";
-//    }
-//
-//    // 게시글 수정 폼(새로운 값 입력 받음)
-//    @PostMapping("/{articleId}/form")
-//    public String updateArticle(
-//            @PathVariable Long articleId,
-//            @AuthenticationPrincipal BoardPrincipal boardPrincipal,
-//            ArticleRequest articleRequest
-//    ) {
-//        articleService.updateArticle(articleId, articleRequest.toDto(boardPrincipal.toDto()));
-//
-//        return "redirect:/articles/" + articleId;
-//    }
-//
-//    // 게시글 삭제
-//    @PostMapping("/{articleId}/delete")
-//    public String deleteArticle(
-//            @PathVariable Long articleId,
-//            @AuthenticationPrincipal BoardPrincipal boardPrincipal
-//    ) {
-//        articleService.deleteArticle(articleId, boardPrincipal.getUsername());
-//
-//        return "redirect:/articles";
-//    }
+        return "redirect:/articles";
+    }
+
+    // 게시글 수정 폼(기존 값 출력)
+    @GetMapping("/{articleId}/form")
+    public String updateArticleForm(@PathVariable Long articleId, ModelMap map) {
+        ArticleResponse article = ArticleResponse.from(articleService.getArticle(articleId));
+
+        map.addAttribute("article", article);
+        map.addAttribute("formStatus", FormStatus.UPDATE);
+
+        return "articles/form";
+    }
+
+    // 게시글 수정 폼(새로운 값 입력 받음)
+    @PostMapping("/{articleId}/form")
+    public String updateArticle(
+            @PathVariable Long articleId,
+            ArticleRequest articleRequest
+    ) {
+        articleService.updateArticle(articleId, articleRequest.toDto(UserAccountDto.of(
+                "test1","1234","test1@email.com","Test1","memo"
+        )));
+
+        return "redirect:/articles/" + articleId;
+    }
+
+    // 게시글 삭제
+    @PostMapping("/{articleId}/delete")
+    public String deleteArticle(
+            @PathVariable Long articleId
+    ) {
+        articleService.deleteArticle(articleId);
+
+        return "redirect:/articles";
+    }
 }

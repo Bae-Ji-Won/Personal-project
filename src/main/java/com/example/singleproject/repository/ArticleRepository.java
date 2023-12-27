@@ -27,7 +27,7 @@ public interface ArticleRepository extends
     Page<Article> findByContentContaining(String content, Pageable pageable);
     Page<Article> findByUserAccount_UserIdContaining(String userId, Pageable pageable);
     Page<Article> findByUserAccount_NicknameContaining(String nickname, Pageable pageable);
-    Page<Article> findByHashtag(String hashtag, Pageable pageable);
+    void deleteByIdAndUserAccount_UserId(Long articleId, String userid);
 
 
     @Override
@@ -36,7 +36,7 @@ public interface ArticleRepository extends
         bindings.including(root.title,root.content,root.hashtag,root.createdAt,root.createdBy);     // 선택적 검색기능을 위한 필드 범위 정함
         bindings.bind(root.title).first(StringExpression::containsIgnoreCase);      // title에 대한 세부 검색기능 설정  => like '%${v}%'
         bindings.bind(root.content).first(StringExpression::containsIgnoreCase);
-        bindings.bind(root.hashtag).first(StringExpression::containsIgnoreCase);
+        bindings.bind(root.hashtag.any().hashtagName).first(StringExpression::containsIgnoreCase);
         bindings.bind(root.createdAt).first(DateTimeExpression::eq);
         bindings.bind(root.createdBy).first(StringExpression::containsIgnoreCase);
     }
